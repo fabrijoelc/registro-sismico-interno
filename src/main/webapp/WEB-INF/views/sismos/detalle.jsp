@@ -1,3 +1,4 @@
+<%@ page pageEncoding="UTF-8" %>
 <%@ include file="cabecera.jspf" %>
 <nav class="migas"><a href="${pageContext.request.contextPath}/sismos">Reportes sísmicos</a><span>/</span><span>Detalle</span></nav>
 <div class="encabezado-pagina"><div><p class="sobrelinea">REPORTE #${sismo.id}</p><h1><c:out value="${sismo.codigo}"/></h1><p class="subtitulo">Información registrada para revisión interna.</p></div><span class="estado estado-grande"><c:out value="${sismo.estado.etiqueta}"/></span></div>

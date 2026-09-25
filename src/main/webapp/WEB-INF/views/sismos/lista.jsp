@@ -1,3 +1,4 @@
+<%@ page pageEncoding="UTF-8" %>
 <%@ include file="cabecera.jspf" %>
 <div class="encabezado-pagina">
   <div><p class="sobrelinea">MÓDULO 01 / REPORTES</p><h1>Reportes sísmicos</h1><p class="subtitulo">Consulta y actualización de reportes iniciales recibidos por operadores.</p></div>

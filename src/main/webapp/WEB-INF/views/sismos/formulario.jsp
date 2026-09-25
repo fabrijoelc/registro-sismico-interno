@@ -1,3 +1,4 @@
+<%@ page pageEncoding="UTF-8" %>
 <%@ include file="cabecera.jspf" %>
 <nav class="migas"><a href="${pageContext.request.contextPath}/sismos">Reportes sísmicos</a><span>/</span><span><c:out value="${titulo}"/></span></nav>
 <div class="encabezado-pagina"><div><p class="sobrelinea">MÓDULO 01 / REPORTES</p><h1><c:out value="${titulo}"/></h1><p class="subtitulo">Los campos marcados con * son obligatorios.</p></div></div>

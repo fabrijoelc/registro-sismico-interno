@@ -1,0 +1,12 @@
+{
+  "fecha": "2026-10-15T04:25:41.140Z",
+  "junit": {
+    "tests": 23,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "web_checks": 16,
+  "persistencia_mysql": "Verificada tras reinicio y baja lógica",
+  "datos": "Sintéticos"
+}

@@ -1,20 +1,50 @@
 package pe.isil.sismos.model;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Entity
+@Table(name="sismo", uniqueConstraints=@UniqueConstraint(name="uk_sismo_codigo", columnNames="codigo"))
 public class Sismo {
     private static final DateTimeFormatter FORMATO = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
+    @Column(nullable=false, length=40)
     private String codigo;
+    @Column(name="fecha_hora", nullable=false)
     private LocalDateTime fechaHora;
+    @Column(name="referencia", nullable=false, length=120)
     private String ubicacion;
+    @Column(nullable=false, precision=4, scale=2)
     private BigDecimal magnitud;
+    @Column(name="profundidad_km", nullable=false, precision=7, scale=2)
     private BigDecimal profundidadKm;
+    @Enumerated(EnumType.STRING) @Column(nullable=false, length=20)
     private EstadoSismo estado;
+    @Column(length=500)
     private String observaciones;
+    @Column(nullable=false)
     private boolean activo = true;
+    @ManyToOne(fetch=FetchType.EAGER, optional=false)
+    @JoinColumn(name="ubicacion_id", nullable=false, foreignKey=@ForeignKey(name="fk_sismo_ubicacion"))
+    private Ubicacion ubicacionGeografica;
+    @Enumerated(EnumType.STRING) @Column(nullable=false, length=20)
+    private CanalRecepcion canal;
+    @Column(precision=9, scale=6)
+    private BigDecimal latitud;
+    @Column(precision=9, scale=6)
+    private BigDecimal longitud;
+
+    public Ubicacion getUbicacionGeografica() { return ubicacionGeografica; }
+    public void setUbicacionGeografica(Ubicacion valor) { ubicacionGeografica = valor; }
+    public CanalRecepcion getCanal() { return canal; }
+    public void setCanal(CanalRecepcion valor) { canal = valor; }
+    public BigDecimal getLatitud() { return latitud; }
+    public void setLatitud(BigDecimal valor) { latitud = valor; }
+    public BigDecimal getLongitud() { return longitud; }
+    public void setLongitud(BigDecimal valor) { longitud = valor; }
 
     public Sismo() { }
 

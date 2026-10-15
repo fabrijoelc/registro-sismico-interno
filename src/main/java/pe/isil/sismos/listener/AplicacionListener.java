@@ -1,31 +1,29 @@
 package pe.isil.sismos.listener;
-
-import jakarta.servlet.ServletContextEvent;
-import jakarta.servlet.ServletContextListener;
+import jakarta.persistence.*;
+import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebListener;
-import pe.isil.sismos.model.EstadoSismo;
-import pe.isil.sismos.model.Sismo;
-import pe.isil.sismos.repository.SismoRepository;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
+import pe.isil.sismos.repository.*;
+import java.util.Map;
 @WebListener
 public class AplicacionListener implements ServletContextListener {
-    public static final String REPOSITORIO = "sismoRepository";
-
-    @Override
-    public void contextInitialized(ServletContextEvent evento) {
-        SismoRepository repositorio = new SismoRepository();
-        repositorio.crear(new Sismo(0, "SIS-2026-001", LocalDateTime.of(2026, 9, 18, 9, 20),
-                "Lima, Lima", new BigDecimal("4.2"), new BigDecimal("38.0"),
-                EstadoSismo.PENDIENTE, "Reporte inicial de prueba", true));
-        repositorio.crear(new Sismo(0, "SIS-2026-002", LocalDateTime.of(2026, 9, 19, 14, 5),
-                "Arequipa, Camaná", new BigDecimal("5.1"), new BigDecimal("62.5"),
-                EstadoSismo.EN_VERIFICACION, "Ubicación pendiente de revisión", true));
-        repositorio.crear(new Sismo(0, "SIS-2026-003", LocalDateTime.of(2026, 9, 20, 18, 40),
-                "Piura, Paita", new BigDecimal("3.7"), new BigDecimal("22.0"),
-                EstadoSismo.VERIFICADO, "Dato de prueba revisado", true));
-        evento.getServletContext().setAttribute(REPOSITORIO, repositorio);
+    public static final String REPOSITORIO="sismoRepository";
+    public static final String UBICACIONES="ubicacionRepository";
+    private EntityManagerFactory fabrica;
+    private String variable(String nombre,String defecto) {
+        String valor=System.getenv(nombre); return valor==null || valor.isBlank()?defecto:valor;
+    }
+    @Override public void contextInitialized(ServletContextEvent evento) {
+        String clave=System.getenv("DB_PASSWORD");
+        if(clave==null || clave.isBlank()) throw new IllegalStateException("Configura DB_PASSWORD antes de iniciar Tomcat.");
+        fabrica=Persistence.createEntityManagerFactory("sismos",Map.of(
+            "jakarta.persistence.jdbc.driver","com.mysql.cj.jdbc.Driver",
+            "jakarta.persistence.jdbc.url",variable("DB_URL","jdbc:mysql://localhost:13308/sismos_pa2?connectionTimeZone=America/Lima"),
+            "jakarta.persistence.jdbc.user",variable("DB_USER","sismos"),
+            "jakarta.persistence.jdbc.password",clave));
+        evento.getServletContext().setAttribute(REPOSITORIO,new SismoRepository(fabrica));
+        evento.getServletContext().setAttribute(UBICACIONES,new UbicacionRepository(fabrica));
+    }
+    @Override public void contextDestroyed(ServletContextEvent evento) {
+        if(fabrica!=null && fabrica.isOpen()) fabrica.close();
     }
 }

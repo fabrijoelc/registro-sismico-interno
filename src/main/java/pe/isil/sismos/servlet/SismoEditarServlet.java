@@ -23,7 +23,7 @@ public class SismoEditarServlet extends ServletUtil {
         request.setCharacterEncoding("UTF-8");
         Long id = leerId(request);
         if (id == null || repositorio().buscarActivo(id).isEmpty()) { noEncontrado(response); return; }
-        SismoForm form = SismoForm.validar(request, repositorio(), id);
+        SismoForm form = SismoForm.validar(request, repositorio(), ubicaciones(), id);
         if (!form.isValido()) { response.setStatus(400); mostrar(request, response, id, form); return; }
         try {
             if (!repositorio().actualizar(id, form.getSismo())) { noEncontrado(response); return; }
@@ -41,6 +41,8 @@ public class SismoEditarServlet extends ServletUtil {
         request.setAttribute("titulo", "Editar reporte sísmico");
         request.setAttribute("accion", "editar");
         request.setAttribute("estados", EstadoSismo.values());
+        request.setAttribute("canales", pe.isil.sismos.model.CanalRecepcion.values());
+        request.setAttribute("ubicaciones", ubicaciones().listar());
         vista(request, response, "formulario");
     }
 }

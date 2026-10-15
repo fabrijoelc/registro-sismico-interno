@@ -1,0 +1,8 @@
+Consulta real posterior a reinicio y baja lógica.
+SELECT s.id,s.codigo,s.activo+0 AS activo,s.canal,s.latitud,s.longitud,
+u.codigo AS ubicacion,u.activo+0 AS ubicacion_activa
+FROM sismo s JOIN ubicacion u ON u.id=s.ubicacion_id
+WHERE s.id=7;
+
+id	codigo	activo	canal	latitud	longitud	ubicacion	ubicacion_activa
+7	QA-SIS-8325117	0	CORREO	-9.527790	-77.527780	QA-8325117	0

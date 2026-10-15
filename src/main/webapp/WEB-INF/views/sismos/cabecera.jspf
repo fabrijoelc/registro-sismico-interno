@@ -13,7 +13,8 @@
 <header class="barra">
   <div class="contenedor barra-contenido">
     <a class="marca" href="${pageContext.request.contextPath}/sismos"><span class="marca-simbolo">S</span><span>SI<span class="marca-acento">SMO</span><small>Registro interno de reportes</small></span></a>
-    <span class="etiqueta-entorno">ENTORNO DE PRUEBA</span>
+    <nav class="menu-principal" aria-label="Navegación principal"><a href="${pageContext.request.contextPath}/sismos">Reportes</a><a href="${pageContext.request.contextPath}/ubicaciones">Ubicaciones</a></nav>
+    <span class="etiqueta-entorno">PA2 · JPA + MYSQL</span>
   </div>
 </header>
 <main class="contenedor principal">

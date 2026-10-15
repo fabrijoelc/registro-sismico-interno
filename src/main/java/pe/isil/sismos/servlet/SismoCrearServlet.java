@@ -17,7 +17,7 @@ public class SismoCrearServlet extends ServletUtil {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        SismoForm form = SismoForm.validar(request, repositorio(), null);
+        SismoForm form = SismoForm.validar(request, repositorio(), ubicaciones(), null);
         if (!form.isValido()) { response.setStatus(400); mostrar(request, response, form); return; }
         try {
             long id = repositorio().crear(form.getSismo()).getId();
@@ -34,6 +34,8 @@ public class SismoCrearServlet extends ServletUtil {
         request.setAttribute("titulo", "Nuevo reporte sísmico");
         request.setAttribute("accion", "nuevo");
         request.setAttribute("estados", EstadoSismo.values());
+        request.setAttribute("canales", pe.isil.sismos.model.CanalRecepcion.values());
+        request.setAttribute("ubicaciones", ubicaciones().listar());
         vista(request, response, "formulario");
     }
 }

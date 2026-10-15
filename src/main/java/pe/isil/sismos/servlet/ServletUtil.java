@@ -10,6 +10,9 @@ import pe.isil.sismos.repository.SismoRepository;
 import java.io.IOException;
 
 abstract class ServletUtil extends HttpServlet {
+    protected pe.isil.sismos.repository.UbicacionRepository ubicaciones() {
+        return (pe.isil.sismos.repository.UbicacionRepository) getServletContext().getAttribute(AplicacionListener.UBICACIONES);
+    }
     protected SismoRepository repositorio() {
         return (SismoRepository) getServletContext().getAttribute(AplicacionListener.REPOSITORIO);
     }

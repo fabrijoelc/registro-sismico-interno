@@ -1,0 +1,74 @@
+{
+  "fecha": "2026-10-15T04:25:41.140Z",
+  "base": "http://localhost:18083/sismos-pa2",
+  "datosSinteticos": true,
+  "sismoId": "7",
+  "ubicacionId": "7",
+  "codigo": "QA-SIS-8325117",
+  "pruebas": [
+    {
+      "prueba": "Listado de reportes HTTP 200 y JSP compilada",
+      "resultado": "APROBADO"
+    },
+    {
+      "prueba": "Alta de ubicación persistida con UTF-8",
+      "resultado": "APROBADO"
+    },
+    {
+      "prueba": "Edición y detalle de ubicación",
+      "resultado": "APROBADO"
+    },
+    {
+      "prueba": "Alta y detalle de Sismo con canal, FK y coordenadas (HU09/HU10/HU39)",
+      "resultado": "APROBADO"
+    },
+    {
+      "prueba": "Edición de estado y canal",
+      "resultado": "APROBADO"
+    },
+    {
+      "prueba": "Búsqueda por código y filtro JPQL combinados",
+      "resultado": "APROBADO"
+    },
+    {
+      "prueba": "Servidor rechaza latitud 91 aunque se omita validación HTML",
+      "resultado": "APROBADO"
+    },
+    {
+      "prueba": "Código duplicado HTTP 400",
+      "resultado": "APROBADO"
+    },
+    {
+      "prueba": "Relación inexistente rechazada",
+      "resultado": "APROBADO"
+    },
+    {
+      "prueba": "POST sin token válido HTTP 403",
+      "resultado": "APROBADO"
+    },
+    {
+      "prueba": "Baja de ubicación referenciada bloqueada HTTP 409",
+      "resultado": "APROBADO"
+    },
+    {
+      "prueba": "Reporte conserva ID, relación y datos tras reiniciar MySQL y Tomcat",
+      "resultado": "APROBADO"
+    },
+    {
+      "prueba": "Cancelar baja no modifica el reporte",
+      "resultado": "APROBADO"
+    },
+    {
+      "prueba": "Baja lógica de Sismo: desaparece del listado y detalle HTTP 404",
+      "resultado": "APROBADO"
+    },
+    {
+      "prueba": "Baja de ubicación ahora permitida, conservando la relación histórica",
+      "resultado": "APROBADO"
+    },
+    {
+      "prueba": "Sin errores JavaScript",
+      "resultado": "APROBADO"
+    }
+  ]
+}

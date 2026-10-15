@@ -3,6 +3,9 @@ package pe.isil.sismos.servlet;
 import jakarta.servlet.http.HttpServletRequest;
 import pe.isil.sismos.model.EstadoSismo;
 import pe.isil.sismos.model.Sismo;
+import pe.isil.sismos.model.CanalRecepcion;
+import pe.isil.sismos.model.Ubicacion;
+import pe.isil.sismos.repository.UbicacionRepository;
 import pe.isil.sismos.repository.SismoRepository;
 
 import java.math.BigDecimal;
@@ -27,12 +30,16 @@ public class SismoForm {
         form.valores.put("profundidadKm", sismo.getProfundidadKm().toPlainString());
         form.valores.put("estado", sismo.getEstado().name());
         form.valores.put("observaciones", sismo.getObservaciones());
+        form.valores.put("ubicacionId", String.valueOf(sismo.getUbicacionGeografica().getId()));
+        form.valores.put("canal", sismo.getCanal().name());
+        form.valores.put("latitud", sismo.getLatitud()==null?"":sismo.getLatitud().toPlainString());
+        form.valores.put("longitud", sismo.getLongitud()==null?"":sismo.getLongitud().toPlainString());
         return form;
     }
 
-    public static SismoForm validar(HttpServletRequest request, SismoRepository repository, Long idActual) {
+    public static SismoForm validar(HttpServletRequest request, SismoRepository repository, UbicacionRepository catalogo, Long idActual) {
         SismoForm form = new SismoForm();
-        for (String campo : new String[]{"codigo", "fechaHora", "ubicacion", "magnitud", "profundidadKm", "estado", "observaciones"}) {
+        for (String campo : new String[]{"codigo", "fechaHora", "ubicacion", "magnitud", "profundidadKm", "estado", "observaciones", "ubicacionId", "canal", "latitud", "longitud"}) {
             String valor = request.getParameter(campo);
             form.valores.put(campo, valor == null ? "" : valor.trim());
         }
@@ -48,6 +55,8 @@ public class SismoForm {
         LocalDateTime fechaHora = null;
         try { fechaHora = LocalDateTime.parse(form.valores.get("fechaHora")); }
         catch (DateTimeParseException ex) { form.errores.put("fechaHora", "Ingresa una fecha y hora válidas."); }
+        if(fechaHora!=null && (fechaHora.getYear()<1900 || fechaHora.isAfter(LocalDateTime.now(java.time.ZoneId.of("America/Lima")))))
+            form.errores.put("fechaHora","Usa una fecha desde 1900 que no sea futura (hora de Perú).");
 
         BigDecimal magnitud = decimal(form, "magnitud", "magnitud");
         if (magnitud != null && (magnitud.compareTo(BigDecimal.ZERO) < 0 || magnitud.compareTo(new BigDecimal("10")) > 0))
@@ -60,18 +69,48 @@ public class SismoForm {
         try { estado = EstadoSismo.valueOf(form.valores.get("estado")); }
         catch (IllegalArgumentException ex) { form.errores.put("estado", "Selecciona un estado válido."); }
 
-        if (form.errores.isEmpty())
+        Ubicacion geografica=null;
+        try { geografica=catalogo.buscarActivo(Long.parseLong(form.valores.get("ubicacionId"))).orElse(null); }
+        catch(NumberFormatException ignored) { }
+        if(geografica==null) form.errores.put("ubicacionId","Selecciona una ubicación activa del catálogo.");
+        CanalRecepcion canal=null;
+        try { canal=CanalRecepcion.valueOf(form.valores.get("canal")); }
+        catch(IllegalArgumentException ex) { form.errores.put("canal","Selecciona un canal válido."); }
+        BigDecimal latitud=null,longitud=null;
+        if(!form.valores.get("latitud").isBlank() || !form.valores.get("longitud").isBlank()) {
+            latitud=coordenada(form,"latitud",90);
+            longitud=coordenada(form,"longitud",180);
+        }
+        if (form.errores.isEmpty()) {
             form.sismo = new Sismo(0, codigo, fechaHora, ubicacion, magnitud, profundidad,
                     estado, form.valores.get("observaciones"), true);
+            form.sismo.setUbicacionGeografica(geografica);
+            form.sismo.setCanal(canal);
+            form.sismo.setLatitud(latitud); form.sismo.setLongitud(longitud);
+        }
         return form;
     }
 
     private static BigDecimal decimal(SismoForm form, String campo, String etiqueta) {
-        try { return new BigDecimal(form.valores.get(campo)); }
+        try {
+            BigDecimal valor=new BigDecimal(form.valores.get(campo));
+            if(valor.scale()>2) form.errores.put(campo,"Usa como máximo dos decimales.");
+            return valor;
+        }
         catch (NumberFormatException ex) { form.errores.put(campo, "Ingresa una " + etiqueta + " numérica."); return null; }
     }
 
     public Map<String, String> getValores() { return valores; }
+    private static BigDecimal coordenada(SismoForm form,String campo,int limite) {
+        try {
+            BigDecimal valor=new BigDecimal(form.valores.get(campo));
+            if(valor.abs().compareTo(BigDecimal.valueOf(limite))>0 || valor.scale()>6)
+                form.errores.put(campo,"Usa un valor entre -"+limite+" y "+limite+", con hasta seis decimales.");
+            return valor;
+        } catch(NumberFormatException ex) {
+            form.errores.put(campo,"Completa ambas coordenadas con valores numéricos."); return null;
+        }
+    }
     public Map<String, String> getErrores() { return errores; }
     public boolean isValido() { return errores.isEmpty(); }
     public Sismo getSismo() { return sismo; }

@@ -1,0 +1,33 @@
+name: sismos-pa2
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-pa2-root-local}
+      MYSQL_DATABASE: sismos_pa2
+      MYSQL_USER: sismos
+      MYSQL_PASSWORD: ${DB_PASSWORD:-pa2-demo-local}
+    ports:
+      - "127.0.0.1:13308:3306"
+    volumes:
+      - datos_sismos:/var/lib/mysql
+      - ./database:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+  web:
+    build: .
+    environment:
+      DB_URL: "jdbc:mysql://db:3306/sismos_pa2?allowPublicKeyRetrieval=true&useSSL=false&connectionTimeZone=America/Lima"
+      DB_USER: sismos
+      DB_PASSWORD: ${DB_PASSWORD:-pa2-demo-local}
+      TZ: America/Lima
+    ports:
+      - "127.0.0.1:18083:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  datos_sismos:

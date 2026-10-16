@@ -33,6 +33,10 @@ Figma y un PPT adicional no figuran como entregables obligatorios en la guía PA
 
 ### Obtener la versión actual
 
+Actualización de interfaz (16/10/2026): logo de un solo color, textos más claros y sin etiquetas académicas o de tecnologías en las pantallas. El CRUD y las reglas de validación no cambian. El ZIP incluye esta interfaz y el WAR recompilado.
+
+Si ya tenías la aplicación abierta, después de actualizar el código ejecuta `docker compose up -d --build` y recarga el navegador. No borres el volumen de MySQL: tus datos se conservan.
+
 Si todavía no tienes el repositorio:
 
 ~~~powershell

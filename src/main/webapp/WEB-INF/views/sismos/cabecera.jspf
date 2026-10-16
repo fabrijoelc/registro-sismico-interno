@@ -7,14 +7,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Registro interno de sismos</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css?v=2">
 </head>
 <body>
 <header class="barra">
   <div class="contenedor barra-contenido">
-    <a class="marca" href="${pageContext.request.contextPath}/sismos"><span class="marca-simbolo">S</span><span>SI<span class="marca-acento">SMO</span><small>Registro interno de reportes</small></span></a>
+    <a class="marca" href="${pageContext.request.contextPath}/sismos"><span class="marca-simbolo" aria-hidden="true">S</span><span>SISMO<small>Registro interno de reportes</small></span></a>
     <nav class="menu-principal" aria-label="Navegación principal"><a href="${pageContext.request.contextPath}/sismos">Reportes</a><a href="${pageContext.request.contextPath}/ubicaciones">Ubicaciones</a></nav>
-    <span class="etiqueta-entorno">PA2 · JPA + MYSQL</span>
+
   </div>
 </header>
 <main class="contenedor principal">

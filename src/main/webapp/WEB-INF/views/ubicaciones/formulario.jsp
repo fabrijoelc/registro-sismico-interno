@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ include file="../sismos/cabecera.jspf" %>
 <nav class="migas"><a href="${pageContext.request.contextPath}/ubicaciones">Ubicaciones</a><span>/</span><span>Formulario</span></nav>
-<div class="encabezado-pagina"><div><p class="sobrelinea">CATÁLOGO GEOGRÁFICO</p><h1>${accion eq 'editar' ? 'Editar ubicación' : 'Nueva ubicación'}</h1><p class="subtitulo">Todos los campos son obligatorios. El código identifica una ubicación del catálogo.</p></div></div>
+<div class="encabezado-pagina"><div><p class="sobrelinea">Catálogo geográfico</p><h1>${accion eq 'editar' ? 'Editar ubicación' : 'Nueva ubicación'}</h1><p class="subtitulo">Todos los campos son obligatorios. El código identifica una ubicación del catálogo.</p></div></div>
 <section class="tarjeta formulario-tarjeta">
 <c:if test="${not empty errores}"><div class="aviso error" role="alert">Revisa los campos señalados.</div></c:if>
 <form method="post" action="${pageContext.request.contextPath}/ubicaciones/${accion}">

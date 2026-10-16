@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ include file="cabecera.jspf" %>
 <div class="encabezado-pagina">
-  <div><p class="sobrelinea">MÓDULO 01 / REPORTES</p><h1>Reportes sísmicos</h1><p class="subtitulo">Consulta y actualización de reportes iniciales recibidos por operadores.</p></div>
+  <div><p class="sobrelinea">Gestión de reportes</p><h1>Reportes sísmicos</h1><p class="subtitulo">Consulta, registra y actualiza los reportes recibidos.</p></div>
   <a class="boton primario" href="${pageContext.request.contextPath}/sismos/nuevo">+ Nuevo reporte</a>
 </div>
 <c:if test="${param.eliminado eq '1'}"><div class="aviso exito" role="status">Reporte dado de baja correctamente.</div></c:if>

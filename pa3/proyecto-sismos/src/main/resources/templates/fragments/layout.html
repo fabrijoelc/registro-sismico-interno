@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(titulo)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title th:text="${titulo} + ' · SISMO'">SISMO</title>
+  <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<header class="barra" th:fragment="header(seccion)">
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+  <div class="contenedor barra-contenido">
+    <a class="marca" th:href="@{/sismos}" aria-label="SISMO, ir a reportes">
+      <span class="marca-simbolo" aria-hidden="true">S</span>
+      <span>SISMO<small>Registro interno de reportes</small></span>
+    </a>
+    <nav class="menu-principal" aria-label="Navegación principal">
+      <a th:href="@{/sismos}" th:attr="aria-current=${seccion == 'reportes' ? 'page' : null}">Reportes</a>
+      <a th:href="@{/catalogos/ubigeos}" th:attr="aria-current=${seccion == 'catalogos' ? 'page' : null}">Catálogos</a>
+      <a th:href="@{/importaciones}" th:attr="aria-current=${seccion == 'importar' ? 'page' : null}">Importar datos</a>
+    </nav>
+  </div>
+</header>
+<th:block th:fragment="mensajes">
+  <div class="aviso exito" role="status" th:if="${mensaje}" th:text="${mensaje}"></div>
+  <div class="aviso error" role="alert" th:if="${error}" th:text="${error}"></div>
+</th:block>
+<nav class="catalogo-tabs" aria-label="Catálogos" th:fragment="catalogos(seleccion)">
+  <a th:href="@{/catalogos/ubigeos}" th:attr="aria-current=${seleccion == 'ubigeos' ? 'page' : null}">Ubigeos</a>
+  <a th:href="@{/catalogos/alertas}" th:attr="aria-current=${seleccion == 'alertas' ? 'page' : null}">Tipos de alerta</a>
+  <a th:href="@{/catalogos/danos}" th:attr="aria-current=${seleccion == 'danos' ? 'page' : null}">Tipos de daño</a>
+</nav>
+</body>
+</html>

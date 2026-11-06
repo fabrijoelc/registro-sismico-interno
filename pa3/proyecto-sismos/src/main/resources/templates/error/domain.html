@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${titulo != null ? titulo : 'No se pudo completar la acción'})}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header('')}"></header>
+<main class="contenedor principal" id="contenido"><section class="tarjeta error-pagina"><p class="sobrelinea">Revisa la operación</p><h1 th:text="${titulo != null ? titulo : 'No se pudo completar la acción'}"></h1><p th:text="${error != null ? error : 'El registro no está disponible o la operación no puede realizarse en su estado actual.'}"></p><div class="botonera"><a class="boton primario" th:href="@{/sismos}">Volver a reportes</a><a class="boton secundario" th:href="@{/catalogos/ubigeos}">Ver catálogos</a></div></section></main>
+</body></html>

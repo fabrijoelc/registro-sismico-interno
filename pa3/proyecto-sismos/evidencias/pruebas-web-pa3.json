@@ -1,0 +1,126 @@
+{
+  "fecha": "2026-11-06T04:29:19.086Z",
+  "resultado": "APROBADO",
+  "codigo": "SIS-QA-939342232",
+  "sismoId": 1,
+  "cargas": [
+    {
+      "archivo": "ubigeo.csv",
+      "esperados": 25
+    },
+    {
+      "archivo": "tipo_alerta.csv",
+      "esperados": 4
+    },
+    {
+      "archivo": "tipo_dano.csv",
+      "esperados": 7
+    }
+  ],
+  "pruebas": [
+    {
+      "nombre": "Arranque Spring Boot y vista Thymeleaf",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Importación de ubigeo.csv (25)",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Importación de tipo_alerta.csv (4)",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Importación de tipo_dano.csv (7)",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "MySQL: 25/4/7 maestros y UTF-8 con ceros iniciales",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Recarga idempotente sin duplicar maestros",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Archivo inválido informa fila y revierte la fila válida anterior",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Conflicto de código no sobrescribe datos",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Tres maestros: listados y formularios disponibles",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Fecha futura rechazada",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Coordenadas incompletas rechazadas",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Servicio rechaza referencia inexistente",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Caso de uso Registrar sismo con ubigeo y alerta",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Código de sismo único",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Edición conserva registro y cambia el estado",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Búsqueda por código y filtro por estado",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Cantidad cero rechazada por Bean Validation",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Caso de uso Registrar daño y consultar vínculo con el sismo",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Protección de maestro con sismos activos",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Conservación del sismo con daños asociados",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Baja lógica sin eliminación física",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Formularios POST protegidos con token CSRF",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Registro inexistente devuelve una pantalla 404",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Vista adaptable sin desbordamiento de página",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Sismo y daño persisten después de reiniciar Spring Boot",
+      "resultado": "APROBADO"
+    },
+    {
+      "nombre": "Sin errores JavaScript durante el recorrido",
+      "resultado": "APROBADO"
+    }
+  ]
+}

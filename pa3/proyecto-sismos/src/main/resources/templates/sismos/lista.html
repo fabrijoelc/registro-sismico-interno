@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Reportes sísmicos')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header('reportes')}"></header>
+<main class="contenedor principal" id="contenido">
+  <div class="encabezado-pagina">
+    <div><p class="sobrelinea">Gestión de reportes</p><h1>Reportes sísmicos</h1><p class="subtitulo">Consulta los eventos recibidos y registra su ubicación, nivel de alerta y daños reportados.</p></div>
+    <a class="boton primario" th:href="@{/sismos/nuevo}"><span aria-hidden="true">+</span> Nuevo reporte</a>
+  </div>
+  <th:block th:replace="~{fragments/layout :: mensajes}"></th:block>
+  <section class="tarjeta" aria-label="Lista de reportes">
+    <form class="filtros" method="get" th:action="@{/sismos}">
+      <div class="campo-busqueda"><label for="q">Buscar por código</label><input id="q" type="search" name="q" th:value="${q}" placeholder="Ej. SIS-2026-001" maxlength="30"></div>
+      <div class="campo-estado"><label for="estado">Estado de revisión</label><select id="estado" name="estado"><option value="">Todos los estados</option><option th:each="opcion : ${estados}" th:value="${opcion.name()}" th:text="${opcion}" th:selected="${opcion.name() == estadoSeleccionado}"></option></select></div>
+      <button class="boton secundario" type="submit">Aplicar filtros</button><a class="enlace-limpiar" th:href="@{/sismos}">Limpiar</a>
+    </form>
+    <div class="tabla-scroll">
+      <table><thead><tr><th scope="col">Código / fecha</th><th scope="col">Ubicación</th><th scope="col">Magnitud</th><th scope="col">Alerta</th><th scope="col">Estado</th><th scope="col">Acciones</th></tr></thead>
+        <tbody><tr th:each="sismo : ${sismos}">
+          <td><a class="codigo" th:href="@{/sismos/{id}(id=${sismo.id})}" th:text="${sismo.codigo}"></a><span class="celda-secundaria" th:text="${#temporals.format(sismo.fechaHora, 'dd/MM/yyyy HH:mm')}"></span></td>
+          <td><span th:text="${sismo.ubigeo.nombre}"></span><span class="celda-secundaria" th:text="${sismo.referencia}"></span></td>
+          <td><strong th:text="${sismo.magnitud}"></strong></td>
+          <td><span class="tag-color" th:attr="data-color=${sismo.tipoAlerta.color.name()}" th:text="${sismo.tipoAlerta.nombre}"></span></td>
+          <td><span class="estado" th:text="${sismo.estado}"></span></td>
+          <td><div class="acciones"><a th:href="@{/sismos/{id}(id=${sismo.id})}">Ver</a><a th:href="@{/sismos/{id}/editar(id=${sismo.id})}">Editar</a><a class="peligro-texto" th:href="@{/sismos/{id}/baja(id=${sismo.id})}">Dar de baja</a></div></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(sismos)}"><td colspan="6"><div class="vacio"><strong>No hay reportes para esta búsqueda</strong><p>Prueba con otro código o limpia los filtros para ver todos los reportes activos.</p><a class="boton secundario" th:href="@{/sismos}">Ver todos los reportes</a></div></td></tr></tbody>
+      </table>
+    </div>
+    <div class="tarjeta-pie"><span th:text="${#lists.size(sismos)}">0</span> reporte(s) visible(s) · Solo se muestran registros activos.</div>
+  </section>
+</main>
+</body></html>

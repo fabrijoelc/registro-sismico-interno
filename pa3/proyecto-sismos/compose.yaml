@@ -1,0 +1,34 @@
+name: sismos-pa3
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: sismos_pa3
+      MYSQL_USER: sismos
+      MYSQL_PASSWORD: ${DB_PASSWORD:-sismos-local-cambiar}
+      TZ: America/Lima
+    ports:
+      - "127.0.0.1:13309:3306"
+    volumes:
+      - datos_sismos_pa3:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=$$MYSQL_PASSWORD mysql -h 127.0.0.1 -u $$MYSQL_USER -D $$MYSQL_DATABASE -e 'SELECT 1' --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 35
+  web:
+    build: .
+    environment:
+      DB_URL: jdbc:mysql://db:3306/sismos_pa3?allowPublicKeyRetrieval=true&useSSL=false&connectionTimeZone=America/Lima
+      DB_USER: sismos
+      DB_PASSWORD: ${DB_PASSWORD:-sismos-local-cambiar}
+      SERVER_PORT: 8080
+      TZ: America/Lima
+    ports:
+      - "127.0.0.1:18084:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  datos_sismos_pa3:

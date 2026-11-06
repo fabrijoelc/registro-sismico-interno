@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Dar de baja un reporte')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header('reportes')}"></header>
+<main class="contenedor principal" id="contenido">
+  <nav class="migas" aria-label="Ruta de navegación"><a th:href="@{/sismos}">Reportes</a><span aria-hidden="true">/</span><a th:href="@{/sismos/{id}(id=${sismo.id})}" th:text="${sismo.codigo}"></a><span aria-hidden="true">/</span><span>Dar de baja</span></nav>
+  <th:block th:replace="~{fragments/layout :: mensajes}"></th:block>
+  <section class="tarjeta confirmacion"><div class="alerta-icono" aria-hidden="true">!</div><p class="sobrelinea">Confirmar una baja</p><h1>¿Dar de baja este reporte?</h1><p class="subtitulo">Dejará de aparecer en la lista de reportes activos. Sus datos y los daños asociados se conservarán para mantener el historial.</p><div class="dato-confirmacion"><span>Reporte seleccionado</span><strong th:text="${sismo.codigo}"></strong></div>
+    <form method="post" th:action="@{/sismos/{id}/baja(id=${sismo.id})}"><input type="hidden" name="_csrf" th:value="${csrf}"><div class="botonera"><button class="boton peligro-solido" type="submit">Confirmar baja</button><a class="boton secundario" th:href="@{/sismos/{id}(id=${sismo.id})}">Conservar reporte</a></div></form>
+  </section>
+</main></body></html>

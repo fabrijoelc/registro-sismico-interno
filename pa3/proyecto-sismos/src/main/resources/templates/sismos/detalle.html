@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${sismo.codigo})}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header('reportes')}"></header>
+<main class="contenedor principal" id="contenido">
+  <nav class="migas" aria-label="Ruta de navegación"><a th:href="@{/sismos}">Reportes</a><span aria-hidden="true">/</span><span th:text="${sismo.codigo}"></span></nav>
+  <div class="encabezado-pagina"><div><p class="sobrelinea">Detalle del reporte</p><h1 th:text="${sismo.codigo}"></h1><p class="subtitulo" th:text="${sismo.referencia}"></p></div><div class="detalle-acciones"><a class="boton secundario" th:href="@{/sismos/{id}/editar(id=${sismo.id})}">Editar reporte</a><a class="boton peligro" th:href="@{/sismos/{id}/baja(id=${sismo.id})}">Dar de baja</a></div></div>
+  <th:block th:replace="~{fragments/layout :: mensajes}"></th:block>
+  <section class="tarjeta detalle-tarjeta" aria-label="Información del evento">
+    <dl class="detalle-grid">
+      <div><dt>Fecha y hora</dt><dd th:text="${#temporals.format(sismo.fechaHora, 'dd/MM/yyyy HH:mm')}"></dd></div>
+      <div><dt>Magnitud</dt><dd><span class="numero-dato" th:text="${sismo.magnitud}"></span></dd></div>
+      <div><dt>Profundidad</dt><dd><span class="numero-dato" th:text="${sismo.profundidadKm}"></span> <span class="unidad">km</span></dd></div>
+      <div><dt>Ubigeo</dt><dd th:text="${sismo.ubigeo.nombre}"></dd><dd class="solo-lectura" th:text="${sismo.ubigeo.codigo + ' · ' + sismo.ubigeo.tipo}"></dd></div>
+      <div><dt>Tipo de alerta</dt><dd><span class="tag-color" th:attr="data-color=${sismo.tipoAlerta.color.name()}" th:text="${sismo.tipoAlerta.nombre}"></span></dd></div>
+      <div><dt>Estado de revisión</dt><dd><span class="estado estado-grande" th:text="${sismo.estado}"></span></dd></div>
+      <div><dt>Canal de recepción</dt><dd th:text="${sismo.canal}"></dd></div>
+      <div><dt>Latitud</dt><dd th:text="${sismo.latitud != null ? sismo.latitud : 'No registrada'}"></dd></div>
+      <div><dt>Longitud</dt><dd th:text="${sismo.longitud != null ? sismo.longitud : 'No registrada'}"></dd></div>
+      <div class="amplio texto-largo"><dt>Observaciones</dt><dd th:text="${#strings.isEmpty(sismo.observaciones) ? 'Sin observaciones adicionales.' : sismo.observaciones}"></dd></div>
+    </dl>
+  </section>
+  <section class="tarjeta" id="danos" aria-labelledby="titulo-danos">
+    <div class="tarjeta-cabecera"><div><div class="listado-resumen"><h2 id="titulo-danos">Daños reportados</h2><span class="contador" th:text="${#lists.size(danos)}">0</span></div><p>Registro de afectaciones vinculadas a este evento.</p></div><a class="boton primario" th:href="@{/sismos/{id}/danos/nuevo(id=${sismo.id})}"><span aria-hidden="true">+</span> Registrar daño</a></div>
+    <div class="tabla-scroll"><table><thead><tr><th scope="col">Fecha de registro</th><th scope="col">Tipo / sector</th><th scope="col">Cantidad afectada</th><th scope="col">Descripción</th></tr></thead><tbody>
+      <tr th:each="dano : ${danos}"><td th:text="${#temporals.format(dano.fechaRegistro, 'dd/MM/yyyy HH:mm')}"></td><td><strong th:text="${dano.tipoDano.nombre}"></strong><span class="celda-secundaria" th:text="${dano.tipoDano.sector}"></span></td><td th:text="${dano.cantidadAfectada}"></td><td class="texto-pre" th:text="${dano.descripcion}"></td></tr>
+      <tr th:if="${#lists.isEmpty(danos)}"><td colspan="4"><div class="vacio"><strong>Aún no se han registrado daños</strong><p>Cuando recibas información de afectaciones, agrégala al reporte con su tipo y cantidad.</p><a class="boton secundario" th:href="@{/sismos/{id}/danos/nuevo(id=${sismo.id})}">Registrar el primer daño</a></div></td></tr>
+    </tbody></table></div><div class="tarjeta-pie">Las cantidades se interpretan según el tipo de daño. No se suman personas, viviendas y otros bienes en un mismo total.</div>
+  </section>
+  <div class="botonera"><a class="boton secundario" th:href="@{/sismos}">Volver a reportes</a></div>
+</main></body></html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${titulo})}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header('catalogos')}"></header>
+<main class="contenedor principal" id="contenido">
+  <div class="encabezado-pagina"><div><p class="sobrelinea">Datos de referencia</p><h1 th:text="${titulo}"></h1><p class="subtitulo" th:if="${catalogo == 'ubigeos'}">Mantén las ubicaciones que se pueden seleccionar al registrar un evento.</p><p class="subtitulo" th:if="${catalogo == 'alertas'}">Organiza los niveles de alerta y su prioridad para clasificar los eventos.</p><p class="subtitulo" th:if="${catalogo == 'danos'}">Define los tipos y sectores de afectación utilizados en los daños reportados.</p></div><a class="boton primario" th:href="@{/catalogos/{catalogo}/nuevo(catalogo=${catalogo})}" th:text="${'+ Nuevo ' + #strings.toLowerCase(singular)}"></a></div>
+  <nav th:replace="~{fragments/layout :: catalogos(${catalogo})}"></nav>
+  <th:block th:replace="~{fragments/layout :: mensajes}"></th:block>
+  <section class="tarjeta" th:attr="aria-label=${titulo}">
+    <div class="tabla-scroll catalogo-tabla"><table><thead><tr><th scope="col">Código</th><th scope="col">Nombre</th><th scope="col" th:if="${catalogo == 'ubigeos'}">Tipo</th><th scope="col" th:if="${catalogo == 'alertas'}">Color / prioridad</th><th scope="col" th:if="${catalogo == 'danos'}">Sector</th><th scope="col">Estado</th><th scope="col">Acciones</th></tr></thead><tbody>
+      <tr th:each="item : ${items}"><td class="codigo" th:text="${item.codigo}"></td><td><strong th:text="${item.nombre}"></strong><span class="celda-secundaria" th:if="${catalogo != 'ubigeos'}" th:text="${item.descripcion}"></span></td><td th:if="${catalogo == 'ubigeos'}" th:text="${item.tipo}"></td><td th:if="${catalogo == 'alertas'}"><span class="tag-color" th:attr="data-color=${item.color.name()}" th:text="${item.color}"></span><span class="celda-secundaria" th:text="${'Prioridad ' + item.prioridad}"></span></td><td th:if="${catalogo == 'danos'}" th:text="${item.sector}"></td><td><span class="estado" th:classappend="${item.estado.name() == 'INACTIVO'} ? 'inactivo'" th:text="${item.estado}"></span></td><td><div class="acciones"><a th:href="@{/catalogos/{catalogo}/{id}/editar(catalogo=${catalogo},id=${item.id})}">Editar</a><a th:href="@{/catalogos/{catalogo}/{id}/estado(catalogo=${catalogo},id=${item.id})}" th:classappend="${item.estado.name() == 'ACTIVO'} ? 'peligro-texto'" th:text="${item.estado.name() == 'ACTIVO' ? 'Desactivar' : 'Activar'}"></a></div></td></tr>
+      <tr th:if="${#lists.isEmpty(items)}"><td colspan="5"><div class="vacio"><strong>Este catálogo está vacío</strong><p>Registra el primer elemento o importa los datos desde un archivo CSV.</p><a class="boton secundario" th:href="@{/importaciones}">Importar datos</a></div></td></tr>
+    </tbody></table></div><div class="tarjeta-pie"><span th:text="${#lists.size(items)}">0</span> registro(s) · Los elementos inactivos conservan su historial y no se ofrecen en nuevos registros.</div>
+  </section>
+</main></body></html>

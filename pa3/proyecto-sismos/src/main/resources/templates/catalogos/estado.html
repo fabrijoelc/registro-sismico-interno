@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Cambiar estado')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header('catalogos')}"></header>
+<main class="contenedor principal" id="contenido">
+  <nav class="migas" aria-label="Ruta de navegación"><a th:href="@{/catalogos/{catalogo}(catalogo=${catalogo})}">Catálogo</a><span aria-hidden="true">/</span><span>Cambiar estado</span></nav>
+  <th:block th:replace="~{fragments/layout :: mensajes}"></th:block>
+  <section class="tarjeta confirmacion"><p class="sobrelinea">Confirmar un cambio de estado</p><h1 th:text="${estadoDestino.name() == 'INACTIVO' ? '¿Desactivar este registro?' : '¿Activar este registro?'}"></h1><p class="subtitulo" th:if="${estadoDestino.name() == 'INACTIVO'}">Dejará de estar disponible para nuevas selecciones. Los reportes que ya lo utilizan conservarán su información.</p><p class="subtitulo" th:if="${estadoDestino.name() == 'ACTIVO'}">Volverá a estar disponible para seleccionarlo en nuevos registros.</p><div class="dato-confirmacion"><span th:text="${item.codigo}"></span><strong th:text="${item.nombre}"></strong></div>
+    <form method="post" th:action="@{/catalogos/{catalogo}/{id}/estado(catalogo=${catalogo},id=${item.id})}"><input type="hidden" name="_csrf" th:value="${csrf}"><div class="botonera"><button class="boton" th:classappend="${estadoDestino.name() == 'INACTIVO' ? 'peligro-solido' : 'primario'}" type="submit" th:text="${estadoDestino.name() == 'INACTIVO' ? 'Confirmar desactivación' : 'Confirmar activación'}"></button><a class="boton secundario" th:href="@{/catalogos/{catalogo}(catalogo=${catalogo})}">Cancelar</a></div></form>
+  </section>
+</main></body></html>

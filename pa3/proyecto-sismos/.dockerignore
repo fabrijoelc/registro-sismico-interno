@@ -1,0 +1,7 @@
+target/
+.git/
+.env
+entregables/
+evidencias/
+docs/
+node_modules/

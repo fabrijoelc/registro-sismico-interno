@@ -1,0 +1,2 @@
+package pe.isil.sismos.model;
+public enum SectorDano { SALUD("Salud"), VIVIENDA("Vivienda"), EDUCACION("Educación"), INFRAESTRUCTURA("Infraestructura"), SERVICIOS_BASICOS("Servicios básicos"), AGROPECUARIO("Agropecuario"), POBLACION("Población"); private final String etiqueta; SectorDano(String e){etiqueta=e;} public String getEtiqueta(){return etiqueta;} @Override public String toString(){return etiqueta;} }

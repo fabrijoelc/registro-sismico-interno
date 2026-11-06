@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Registrar daño')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header('reportes')}"></header>
+<main class="contenedor principal" id="contenido">
+  <nav class="migas" aria-label="Ruta de navegación"><a th:href="@{/sismos}">Reportes</a><span aria-hidden="true">/</span><a th:href="@{/sismos/{id}(id=${sismo.id})}" th:text="${sismo.codigo}"></a><span aria-hidden="true">/</span><span>Registrar daño</span></nav>
+  <div class="encabezado-pagina"><div><p class="sobrelinea" th:text="${'Reporte ' + sismo.codigo}"></p><h1>Registrar daño</h1><p class="subtitulo">Añade una afectación recibida. El registro quedará asociado a este evento.</p></div></div>
+  <th:block th:replace="~{fragments/layout :: mensajes}"></th:block>
+  <div class="aviso" role="status" th:if="${#lists.isEmpty(tiposDano)}"><strong>Activa un tipo de daño antes de continuar.</strong><p><a th:href="@{/importaciones}">Importa el archivo de tipos de daño</a> o <a th:href="@{/catalogos/danos}">revisa el catálogo</a>.</p></div>
+  <form class="tarjeta formulario-tarjeta" method="post" novalidate th:action="@{/sismos/{id}/danos/nuevo(id=${sismo.id})}" th:object="${form}">
+    <input type="hidden" name="_csrf" th:value="${csrf}"><p class="requerido">Todos los campos son obligatorios.</p>
+    <div class="aviso error" role="alert" th:if="${#fields.hasErrors('*')}"><strong>Revisa los datos antes de registrar el daño.</strong><ul th:if="${#fields.hasGlobalErrors()}"><li th:each="err : ${#fields.globalErrors()}" th:text="${err}"></li></ul></div>
+    <div class="form-grid">
+      <div><label for="tipoDanoId">Tipo de daño *</label><select id="tipoDanoId" th:field="*{tipoDanoId}" required th:classappend="${#fields.hasErrors('tipoDanoId')} ? 'invalid'" aria-describedby="tipoDanoId-error"><option value="">Selecciona un tipo de daño</option><option th:each="item : ${tiposDano}" th:value="${item.id}" th:text="${item.nombre + ' · ' + item.sector}"></option></select><p class="campo-error" id="tipoDanoId-error" th:errors="*{tipoDanoId}"></p></div>
+      <div><label for="cantidadAfectada">Cantidad afectada *</label><input id="cantidadAfectada" type="number" th:field="*{cantidadAfectada}" required min="1" max="1000000000" step="1" placeholder="Ej. 3" th:classappend="${#fields.hasErrors('cantidadAfectada')} ? 'invalid'" aria-describedby="cantidad-ayuda cantidadAfectada-error"><p class="ayuda" id="cantidad-ayuda">Indica en la descripción si son personas, viviendas u otros bienes.</p><p class="campo-error" id="cantidadAfectada-error" th:errors="*{cantidadAfectada}"></p></div>
+      <div class="ancho-completo"><label for="descripcion">Descripción del daño *</label><textarea id="descripcion" th:field="*{descripcion}" required rows="5" maxlength="1000" placeholder="Ej. Tres viviendas presentan grietas en paredes. Información recibida del equipo local." th:classappend="${#fields.hasErrors('descripcion')} ? 'invalid'" aria-describedby="descripcion-error"></textarea><p class="campo-error" id="descripcion-error" th:errors="*{descripcion}"></p></div>
+    </div><div class="botonera"><button class="boton primario" type="submit">Guardar daño reportado</button><a class="boton secundario" th:href="@{/sismos/{id}(id=${sismo.id})}">Cancelar</a></div>
+  </form>
+</main></body></html>

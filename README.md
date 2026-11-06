@@ -1,4 +1,26 @@
-# Registro interno de sismos | PA2
+# Registro interno de sismos | PA3
+
+La versión Spring Boot está en **[pa3/proyecto-sismos](pa3/proyecto-sismos/README.md)**. La PA2 se conserva en la raíz y en la rama `main`.
+
+Para ensayar esta entrega:
+
+```powershell
+git fetch origin
+git switch pa3-spring-boot
+cd pa3/proyecto-sismos
+docker compose up -d --build
+```
+
+Abrir **http://localhost:18084/sismos-pa3/**. En Importar datos, cargar los tres archivos de `datos/` (25 ubigeos, 4 alertas y 7 tipos de daño). La guía explica el recorrido de los cuatro integrantes.
+
+- [Informe PA3](entregables/PA3_Registro_Interno_de_Sismos_NRC_3703.pdf)
+- [ZIP PA3 actualizado](https://github.com/fabrijoelc/registro-sismico-interno/raw/refs/heads/pa3-spring-boot/entregables/PA3_Proyecto_Sismos_NRC_3703.zip)
+- [Guía de exposición PA3](pa3/proyecto-sismos/docs/GUIA_EXPOSICION.md)
+- [Backlog PA3: 15 terminadas acumuladas y 29 pendientes](pa3/proyecto-sismos/docs/BACKLOG.md)
+
+Antes de cambiar de rama, revisa `git status` y conserva tus modificaciones. El PDF y el ZIP están preparados; falta que el grupo revise, ensaye y grabe su video de 8-12 minutos. Verificación: 42 pruebas Maven y 26 comprobaciones de navegador contra MySQL, incluida persistencia después de reiniciar.
+
+## Referencia de la versión PA2 conservada en la raíz
 
 Grupo 8 · NRC 3703 · ISIL · 2026-20.
 
